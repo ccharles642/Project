@@ -9,7 +9,7 @@ object Josue {
   }
 
   def main(args: Array[String]): Unit = {
-    val x: Double = computeShippingCost(35.0)
+    val x: Double = computeShippingCost(40.0)
     println(x)
   }
 
