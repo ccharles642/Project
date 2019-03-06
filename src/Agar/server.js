@@ -1,7 +1,7 @@
 var blobs = [];
 
-function Blob(id, x, y, r) {
-    this.id = id;
+function Blob(idk, x, y, r) {
+    this.idk = idk;
     this.x = x;
     this.y = y;
     this.r = r;
@@ -44,23 +44,23 @@ io.sockets.on('connection',
     // We are given a websocket object in our function
     function(socket) {
 
-        console.log("We have a new client: " + socket.id);
+        console.log("We have a new client: " + socket.idk);
 
 
         socket.on('start',
             function(data) {
-                console.log(socket.id + " " + data.x + " " + data.y + " " + data.r);
-                var blob = new Blob(socket.id, data.x, data.y, data.r);
+                console.log(socket.idk + " " + data.x + " " + data.y + " " + data.r);
+                var blob = new Blob(socket.idk, data.x, data.y, data.r);
                 blobs.push(blob);
             }
         );
 
         socket.on('update',
             function(data) {
-                //console.log(socket.id + " " + data.x + " " + data.y + " " + data.r);
+                //console.log(socket.idk + " " + data.x + " " + data.y + " " + data.r);
                 var blob;
                 for (var i = 0; i < blobs.length; i++) {
-                    if (socket.id == blobs[i].id) {
+                    if (socket.idk == blobs[i].idk) {
                         blob = blobs[i];
                     }
                 }
