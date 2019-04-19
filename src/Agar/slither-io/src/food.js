@@ -1,10 +1,3 @@
-/**
- * Food that snakes eat - it is pulled towards the center of a snake head after
- * it is first touched
- * @param  {Phaser.Game} game game object
- * @param  {Number} x    coordinate
- * @param  {Number} y    coordinate
- */
 Food = function(game, x, y) {
     this.game = game;
     this.debug = false;
@@ -27,9 +20,6 @@ Food.prototype = {
     onBeginContact: function(phaserBody, p2Body) {
         if (phaserBody && phaserBody.sprite.name == "head" && this.constraint === null) {
             this.sprite.body.collides([]);
-            //Create constraint between the food and the snake head that
-            //it collided with. The food is then brought to the center of
-            //the head sprite
             this.constraint = this.game.physics.p2.createRevoluteConstraint(
                 this.sprite.body, [0,0], phaserBody, [0,0]
             );
@@ -37,21 +27,16 @@ Food.prototype = {
             this.head.snake.food.push(this);
         }
     },
-    /**
-     * Call from main update loop
-     */
+
     update: function() {
-        //once the food reaches the center of the snake head, destroy it and
-        //increment the size of the snake
+
         if (this.head && Math.round(this.head.body.x) == Math.round(this.sprite.body.x) &&
         Math.round(this.head.body.y) == Math.round(this.sprite.body.y)) {
             this.head.snake.incrementSize();
             this.destroy();
         }
     },
-    /**
-     * Destroy this food and its constraints
-     */
+
     destroy: function() {
         if (this.head) {
             this.game.physics.p2.removeConstraint(this.constraint);

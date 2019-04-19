@@ -3,7 +3,6 @@ Game = function(game) {}
 Game.prototype = {
     preload: function() {
 
-        //load assets
         this.game.load.image('circle','asset/circle.png');
     	this.game.load.image('shadow', 'asset/white-shadow.png');
     	this.game.load.image('background', 'asset/tile.png');
@@ -20,32 +19,26 @@ Game.prototype = {
         this.game.world.setBounds(-width, -height, width*2, height*2);
     	this.game.stage.backgroundColor = '#444';
 
-        //add tilesprite background
         var background = this.game.add.tileSprite(-width, -height,
             this.game.world.width, this.game.world.height, 'background');
 
-        //initialize physics and groups
         this.game.physics.startSystem(Phaser.Physics.P2JS);
         this.foodGroup = this.game.add.group();
         this.snakeHeadCollisionGroup = this.game.physics.p2.createCollisionGroup();
         this.foodCollisionGroup = this.game.physics.p2.createCollisionGroup();
 
-        //add food randomly
         for (var i = 0 ; i < 100 ; i++) {
             this.initFood(Util.randomInt(-width, width), Util.randomInt(-height, height));
         }
 
         this.game.snakes = [];
 
-        //create player
         var snake = new PlayerSnake(this.game, 'circle', 0, 0);
         this.game.camera.follow(snake.head);
 
-        //create bots
         new BotSnake(this.game, 'circle', -200, 0);
         new BotSnake(this.game, 'circle', 200, 0);
 
-        //initialize snake groups and collision
         for (var i = 0 ; i < this.game.snakes.length ; i++) {
             var snake = this.game.snakes[i];
             snake.head.body.setCollisionGroup(this.snakeHeadCollisionGroup);
@@ -54,9 +47,6 @@ Game.prototype = {
             snake.addDestroyedCallback(this.snakeDestroyed, this);
         }
     },
-    /**
-     * Main update loop
-     */
     update: function() {
         //update game components
         for (var i = this.game.snakes.length - 1 ; i >= 0 ; i--) {
@@ -67,12 +57,6 @@ Game.prototype = {
             f.food.update();
         }
     },
-    /**
-     * Create a piece of food at a point
-     * @param  {number} x x-coordinate
-     * @param  {number} y y-coordinate
-     * @return {Food}   food object created
-     */
     initFood: function(x, y) {
         var f = new Food(this.game, x, y);
         f.sprite.body.setCollisionGroup(this.foodCollisionGroup);
